@@ -8,9 +8,8 @@ import type { Note } from "@/types/note";
 
 export default function NoteDetails() {
   const params = useParams();
-  
   const id = params?.id as string;
-
+  
   const { data: note, isLoading, isError } = useQuery<Note>({
     queryKey: ["note", id],
     queryFn: () => fetchNoteById(id),
@@ -18,8 +17,6 @@ export default function NoteDetails() {
     refetchOnMount: false,
   });
 
-  // Перевірки за порядком:
-  if (!id) return <p className={css.message}>Invalid note ID</p>;
   if (isLoading) return <p className={css.message}>Loading, please wait...</p>;
   if (isError || !note) return <p className={css.message}>Something went wrong.</p>;
 
@@ -31,9 +28,7 @@ export default function NoteDetails() {
           <button className={css.editBtn}>Edit note</button>
         </div>
         <p className={css.content}>{note.content}</p>
-        <p className={css.date}>
-          {note.createdAt ? new Date(note.createdAt).toLocaleDateString() : ""}
-        </p>
+        <p className={css.date}>{new Date(note.createdAt).toLocaleDateString()}</p>
       </div>
     </div>
   );
