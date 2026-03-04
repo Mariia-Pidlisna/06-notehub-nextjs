@@ -52,7 +52,7 @@ export async function deleteNote(id: string): Promise<Note> {
   return response.data;
 }
 
-export async function fetchNoteById(id: number): Promise<Note> {
+export async function fetchNoteById(id: string): Promise<Note> {
   const response = await axios.get<Note>(`${BASE_URL}/${id}`, {
     headers: {
       Authorization: `Bearer ${API_KEY}`,
