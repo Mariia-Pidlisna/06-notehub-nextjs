@@ -1,4 +1,4 @@
-import css from "./NoteModal.module.css";
+import css from "./Modal.module.css";
 import NoteForm from "../NoteForm/NoteForm";
 import { createPortal } from "react-dom";
 import { useEffect } from "react";
