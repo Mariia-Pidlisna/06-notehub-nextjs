@@ -23,7 +23,7 @@ function NoteList({ notes }: NoteListProps) {
     },
   });
 
-  const handleDelete = (id: number) => {
+  const handleDelete = (id: string) => {
     mutate(id);
   };
 

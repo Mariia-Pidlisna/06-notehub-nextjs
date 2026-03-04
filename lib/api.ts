@@ -20,7 +20,6 @@ export async function fetchNotes(
   };
 
   if (query.trim() !== "") {
-    // add .trim() later
     params.search = query;
   }
 
@@ -44,7 +43,7 @@ export async function createNote(
   return response.data;
 }
 
-export async function deleteNote(id: number): Promise<Note> {
+export async function deleteNote(id: string): Promise<Note> {
   const response = await axios.delete<Note>(`${BASE_URL}/${id}`, {
     headers: {
       Authorization: `Bearer ${API_KEY}`,
