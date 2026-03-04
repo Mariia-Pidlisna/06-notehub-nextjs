@@ -1,46 +1,48 @@
-'use client'
-
-import { createPortal } from "react-dom";
 import css from "./NoteModal.module.css";
+import NoteForm from "../NoteForm/NoteForm";
+import { createPortal } from "react-dom";
 import { useEffect } from "react";
 
 interface NoteModalProps {
-    children: React.ReactNode,
-    onClose: () => void,
+  onClose: () => void;
 }
 
-export default function NoteModal({ children, onClose }: NoteModalProps) {
+function NoteModal({ onClose }: NoteModalProps) {
+  useEffect(() => {
+    const originalOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
 
-    const handleBackdrop = (e: React.MouseEvent<HTMLDivElement>) => {
-        if (e.target === e.currentTarget) {
-            onClose();
-        }
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        onClose();
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+    return () => {
+      document.body.style.overflow = originalOverflow;
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [onClose]);
+
+  const handleBackdropClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (e.target === e.currentTarget) {
+      onClose();
     }
-    
-    useEffect(() => {
-        const onEscape = (e: KeyboardEvent) => {
-        if (e.code === "Escape") {
-            onClose();
-        }
-        };
-        document.addEventListener("keydown", onEscape);
-
-        return () => {
-        document.removeEventListener("keydown", onEscape);
-        };
-    }, [onClose]);
-
-return createPortal(    
+  };
+  return createPortal(
     <div
-        className={css.backdrop}
-        role="dialog"
-        aria-modal="true"
-        onClick={handleBackdrop}
-        >
-        <div className={css.modal}>
-            {children}
-        </div>
+      className={css.backdrop}
+      onClick={handleBackdropClick}
+      role="dialog"
+      aria-modal="true"
+    >
+      <div className={css.modal}>
+        <NoteForm onCancel={onClose} />
+      </div>
     </div>,
     document.body
-    )
+  );
 }
+
+export default NoteModal;
